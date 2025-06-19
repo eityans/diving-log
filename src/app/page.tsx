@@ -1,8 +1,9 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import Link from "next/link";
+import { UserInfo } from "@/app/_components/UserInfo";
 
-export default function Home() {
+export default async function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -39,6 +40,7 @@ export default function Home() {
             ログアウト
           </Link>
         </div>
+        <UserInfo />
       </main>
       <footer className={styles.footer}>なんか書いとけ</footer>
     </div>
