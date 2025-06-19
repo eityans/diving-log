@@ -23,22 +23,22 @@ export default async function Home() {
         </ol>
 
         <div className={styles.ctas}>
-          <Link
+          <a
             className={styles.primary}
             href="/auth/login"
             target="_blank"
             rel="noopener noreferrer"
           >
             ログイン/新規登録
-          </Link>
-          <Link
+          </a>
+          <a
             href="/auth/logout"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.secondary}
           >
             ログアウト
-          </Link>
+          </a>
         </div>
         <UserInfo />
       </main>
