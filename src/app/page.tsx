@@ -1,6 +1,5 @@
 import Image from "next/image";
 import styles from "./page.module.css";
-import Link from "next/link";
 import { UserInfo } from "@/app/_components/UserInfo";
 
 export default async function Home() {
