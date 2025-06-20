@@ -3,10 +3,17 @@
 import { useUser, getAccessToken } from "@auth0/nextjs-auth0";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import {
+  Container,
+  Typography,
+  TextField,
+  Button,
+  Alert,
+  Box,
+} from "@mui/material";
 
 export default function NewLogPage() {
   const { user, isLoading } = useUser();
-
   const router = useRouter();
   const [formData, setFormData] = useState({
     date: "",
@@ -45,7 +52,6 @@ export default function NewLogPage() {
         throw new Error("登録に失敗しました");
       }
 
-      // 登録成功後の処理 (例: ログ一覧ページへ遷移)
       router.push("/log");
     } catch (err) {
       setError(
@@ -62,41 +68,67 @@ export default function NewLogPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-6">ダイビングログ登録</h1>
-      {error && <div className="text-red-500 mb-4">{error}</div>}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium">日付</label>
-          <input
+    <Container maxWidth="sm">
+      <Box sx={{ mt: 4, mb: 4 }}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          ダイビングログ登録
+        </Typography>
+
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
+        )}
+
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{ display: "flex", flexDirection: "column", gap: 3 }}
+        >
+          <TextField
+            label="日付"
             type="date"
             name="date"
             value={formData.date}
             onChange={handleChange}
-            className="w-full p-2 border rounded"
             required
+            InputLabelProps={{ shrink: true }}
+            fullWidth
+            sx={{
+              "& .MuiInputBase-root": {
+                backgroundColor: "background.paper",
+                color: "text.primary",
+              },
+            }}
           />
-        </div>
 
-        <div>
-          <label className="block text-sm font-medium">場所</label>
-          <input
-            type="text"
+          <TextField
+            label="場所"
             name="location"
             value={formData.location}
             onChange={handleChange}
-            className="w-full p-2 border rounded"
             required
+            fullWidth
+            sx={{
+              "& .MuiInputBase-root": {
+                backgroundColor: "background.paper",
+                color: "text.primary",
+              },
+            }}
           />
-        </div>
 
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-        >
-          {isSubmitting ? "送信中..." : "ログを登録"}
-        </button>
-      </form>
-    </div>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            disabled={isSubmitting}
+            fullWidth
+            sx={{ py: 2, mt: 2 }}
+          >
+            {isSubmitting ? "送信中..." : "ログを登録"}
+          </Button>
+        </Box>
+      </Box>
+    </Container>
   );
 }
