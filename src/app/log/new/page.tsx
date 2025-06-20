@@ -1,9 +1,8 @@
 "use client";
 
-import { getAccessToken } from "@auth0/nextjs-auth0";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { useCurrentUser } from "@/lib/hooks/useUserInfo";
+import { useCurrentUser } from "@/lib/hooks/useCurrentUser";
 
 import {
   Container,
@@ -15,7 +14,7 @@ import {
 } from "@mui/material";
 
 export default function NewLogPage() {
-  const { currentUser, isLoading: isUserLoading } = useCurrentUser();
+  const { currentUser, isLoading } = useCurrentUser();
   const router = useRouter();
   const [formData, setFormData] = useState({
     date: "",
@@ -33,7 +32,7 @@ export default function NewLogPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-  if (isUserLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>Loading...</div>;
   if (!currentUser) {
     router.push("/");
     return null;
@@ -44,7 +43,7 @@ export default function NewLogPage() {
     setIsSubmitting(true);
     setError("");
 
-    const token = await getAccessToken();
+    const token = currentUser.token;
 
     try {
       const response = await fetch(

@@ -25,7 +25,7 @@ export function useCurrentUser() {
       if (!response.ok) throw new Error("Failed to fetch user info");
 
       const data = await response.json();
-      setUserInfo(data);
+      setUserInfo({ ...data, token });
       return data;
     } catch (error) {
       console.error("Failed to fetch user info:", error);
