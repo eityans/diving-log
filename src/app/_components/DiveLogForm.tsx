@@ -91,7 +91,8 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
     <Container maxWidth="sm">
       <Box sx={{ mt: 4, mb: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          ダイビングログ登録
+          ダイビングログ
+          {isEdit ? "編集" : "登録"}
         </Typography>
         {currentUser?.id}
 
@@ -163,7 +164,7 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
             fullWidth
             sx={{ py: 2, mt: 2 }}
           >
-            {isSubmitting ? "送信中..." : "ログを登録"}
+            {isSubmitting ? "送信中..." : isEdit ? "ログを編集" : "ログを登録"}
           </Button>
           <Button
             variant="outlined"
