@@ -158,6 +158,15 @@ export default function NewLogPage() {
           >
             {isSubmitting ? "送信中..." : "ログを登録"}
           </Button>
+          <Button
+            variant="outlined"
+            color="secondary"
+            fullWidth
+            sx={{ py: 2, mt: 2 }}
+            onClick={() => router.push("/")}
+          >
+            トップに戻る
+          </Button>
         </Box>
       </Box>
     </Container>

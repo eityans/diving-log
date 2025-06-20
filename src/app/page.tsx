@@ -6,6 +6,8 @@ import { getAccessToken } from "@auth0/nextjs-auth0";
 import { DiveLog } from "@/types/diveLog";
 import { useCurrentUser } from "@/lib/hooks/useCurrentUser";
 import { LogoutButton } from "@/app/_components/LogoutButton";
+import Link from "next/link";
+import { Button } from "@mui/material";
 
 export default function Home() {
   const { currentUser, isLoading } = useCurrentUser();
@@ -60,7 +62,18 @@ export default function Home() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-6">マイダイビングログ</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">マイダイビングログ</h1>
+        <Button
+          component={Link}
+          href="/log/new"
+          variant="contained"
+          color="primary"
+          sx={{ py: 1.5, px: 3 }}
+        >
+          ログを登録
+        </Button>
+      </div>
       <DiveLogList logs={logs} currentUserId={currentUser.id} />
       <LogoutButton />
     </div>
