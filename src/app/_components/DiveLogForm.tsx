@@ -108,6 +108,23 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
           sx={{ display: "flex", flexDirection: "column", gap: 3 }}
         >
           <TextField
+            label="ダイビングNo."
+            name="dive_number"
+            type="number"
+            value={formData.dive_number}
+            onChange={handleChange}
+            required
+            fullWidth
+            inputProps={{ min: 1 }}
+            sx={{
+              "& .MuiInputBase-root": {
+                backgroundColor: "background.paper",
+                color: "text.primary",
+              },
+            }}
+          />
+
+          <TextField
             label="日付"
             type="date"
             name="date"
@@ -131,23 +148,6 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
             onChange={handleChange}
             required
             fullWidth
-            sx={{
-              "& .MuiInputBase-root": {
-                backgroundColor: "background.paper",
-                color: "text.primary",
-              },
-            }}
-          />
-
-          <TextField
-            label="ダイビング本数"
-            name="dive_number"
-            type="number"
-            value={formData.dive_number}
-            onChange={handleChange}
-            required
-            fullWidth
-            inputProps={{ min: 1 }}
             sx={{
               "& .MuiInputBase-root": {
                 backgroundColor: "background.paper",
