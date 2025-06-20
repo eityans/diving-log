@@ -2,7 +2,8 @@
 
 import { useUser, getAccessToken } from "@auth0/nextjs-auth0";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
 import {
   Container,
   Typography,
@@ -19,7 +20,35 @@ export default function NewLogPage() {
     date: "",
     spot_name: "",
     dive_number: "",
+    user_id: "",
   });
+
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const token = await getAccessToken();
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/me`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (response.ok) {
+          const userData = await response.json();
+          setFormData((prev) => ({ ...prev, user_id: userData.id }));
+        }
+      } catch (error) {
+        console.error("Failed to fetch user ID:", error);
+      }
+    };
+
+    if (user && !formData.user_id) {
+      fetchUserId();
+    }
+  }, [user]);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -52,8 +81,7 @@ export default function NewLogPage() {
       if (!response.ok) {
         throw new Error("登録に失敗しました");
       }
-
-      router.push("/log");
+      router.push(`/users/${formData.user_id}`);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "予期せぬエラーが発生しました"
