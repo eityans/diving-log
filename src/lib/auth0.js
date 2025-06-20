@@ -21,6 +21,12 @@ export const auth0 = new Auth0Client({
   },
 
   async onCallback(error, context, session) {
+    if (error) {
+      return NextResponse.redirect(
+        new URL(`/error?error=${error.message}`, process.env.APP_BASE_URL)
+      );
+    }
+
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/users`,
