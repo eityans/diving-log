@@ -1,9 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { DiveLog } from "@/types/diveLog";
-import { Button, TextField } from "@mui/material";
-import { getAccessToken } from "@auth0/nextjs-auth0";
+import { useCurrentUser } from "@/lib/hooks/useCurrentUser";
+
+import {
+  Container,
+  Typography,
+  TextField,
+  Button,
+  Alert,
+  Box,
+} from "@mui/material";
 
 export interface DiveLogFormProps {
   initialData?: DiveLog;
@@ -11,19 +20,42 @@ export interface DiveLogFormProps {
 }
 
 export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
+  const { currentUser, isLoading } = useCurrentUser();
+  const router = useRouter();
   const [formData, setFormData] = useState<Partial<DiveLog>>(
     initialData || {
       spot_name: "",
       date: "",
       dive_number: 0,
+      user_id: currentUser?.id || "",
       // 他のフィールドも追加
     }
   );
 
+  useEffect(() => {
+    if (currentUser?.id) {
+      setFormData((prev) => ({ ...prev, user_id: currentUser.id }));
+    }
+  }, [currentUser]);
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
+
+  if (isLoading) return <div>Loading...</div>;
+  if (!currentUser) {
+    router.push("/");
+    return null;
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    setIsSubmitting(true);
+    setError("");
+
+    const token = currentUser.token;
+
     try {
-      const token = await getAccessToken();
       const url = isEdit
         ? `${process.env.NEXT_PUBLIC_API_BASE_URL}/dive_logs/${initialData?.id}`
         : `${process.env.NEXT_PUBLIC_API_BASE_URL}/dive_logs`;
@@ -40,29 +72,110 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
       if (!response.ok) throw new Error("保存に失敗しました");
 
       // 成功時の処理
-    } catch (error) {
-      console.error("保存エラー:", error);
+      router.push("/");
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "予期せぬエラーが発生しました"
+      );
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <TextField
-        label="スポット名"
-        value={formData.spot_name}
-        onChange={(e) =>
-          setFormData({ ...formData, spot_name: e.target.value })
-        }
-        fullWidth
-        required
-      />
-      {/* 他のフィールドも同様に追加 */}
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-      <div className="flex justify-end">
-        <Button type="submit" variant="contained" color="primary">
-          {isEdit ? "更新" : "作成"}
-        </Button>
-      </div>
-    </form>
+  return (
+    <Container maxWidth="sm">
+      <Box sx={{ mt: 4, mb: 4 }}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          ダイビングログ登録
+        </Typography>
+        {currentUser?.id}
+
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
+        )}
+
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{ display: "flex", flexDirection: "column", gap: 3 }}
+        >
+          <TextField
+            label="日付"
+            type="date"
+            name="date"
+            value={formData.date}
+            onChange={handleChange}
+            required
+            InputLabelProps={{ shrink: true }}
+            fullWidth
+            sx={{
+              "& .MuiInputBase-root": {
+                backgroundColor: "background.paper",
+                color: "text.primary",
+              },
+            }}
+          />
+
+          <TextField
+            label="場所"
+            name="spot_name"
+            value={formData.spot_name}
+            onChange={handleChange}
+            required
+            fullWidth
+            sx={{
+              "& .MuiInputBase-root": {
+                backgroundColor: "background.paper",
+                color: "text.primary",
+              },
+            }}
+          />
+
+          <TextField
+            label="ダイビング本数"
+            name="dive_number"
+            type="number"
+            value={formData.dive_number}
+            onChange={handleChange}
+            required
+            fullWidth
+            inputProps={{ min: 1 }}
+            sx={{
+              "& .MuiInputBase-root": {
+                backgroundColor: "background.paper",
+                color: "text.primary",
+              },
+            }}
+          />
+
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            disabled={isSubmitting}
+            fullWidth
+            sx={{ py: 2, mt: 2 }}
+          >
+            {isSubmitting ? "送信中..." : "ログを登録"}
+          </Button>
+          <Button
+            variant="outlined"
+            color="secondary"
+            fullWidth
+            sx={{ py: 2, mt: 2 }}
+            onClick={() => router.push("/")}
+          >
+            トップに戻る
+          </Button>
+        </Box>
+      </Box>
+    </Container>
   );
 }
