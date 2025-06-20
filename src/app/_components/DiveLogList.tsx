@@ -2,6 +2,8 @@
 
 import { DiveLog } from "@/types/diveLog";
 import { DeleteLogButton } from "./DeleteLogButton";
+import { Button } from "@mui/material";
+import Link from "next/link";
 
 interface DiveLogListProps {
   logs: DiveLog[];
@@ -24,7 +26,15 @@ export function DiveLogList({ logs, currentUserId }: DiveLogListProps) {
           <p className="text-sm">ダイビング本数: {log.dive_number}</p>
           {log.user_id === currentUserId && (
             <div className="flex gap-2 mt-2">
-              <button className="text-sm text-blue-500">編集</button>
+              <Button
+                component={Link}
+                href={`/logs/${log.id}/edit`}
+                size="small"
+                color="primary"
+                variant="outlined"
+              >
+                編集
+              </Button>
               <DeleteLogButton logId={log.id} />
             </div>
           )}
