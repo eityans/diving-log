@@ -6,7 +6,6 @@ import { useEffect } from "react";
 export function useCurrentUser() {
   const currentUser = useAtomValue(userInfoAtom);
   const setUserInfo = useSetAtom(userInfoAtom);
-  console.log(currentUser);
   const { user, isLoading: isAuthLoading } = useUser();
 
   useEffect(() => {
@@ -43,8 +42,8 @@ export function useCurrentUser() {
 
   return {
     currentUser,
-    fetchUserInfo, // 明示的な更新用
-    refreshUserInfo: () => fetchUserInfo(true), // 強制更新用のエイリアス
-    isLoading: isAuthLoading,
+    fetchUserInfo,
+    refreshUserInfo: () => fetchUserInfo(true),
+    isLoading: isAuthLoading || (user && !currentUser),
   };
 }
