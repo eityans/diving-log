@@ -1,11 +1,19 @@
 import { useAtomValue, useSetAtom } from "jotai";
 import { userInfoAtom } from "@/lib/jotai/userAtoms";
 import { useUser, getAccessToken } from "@auth0/nextjs-auth0";
+import { useEffect } from "react";
 
 export function useCurrentUser() {
   const currentUser = useAtomValue(userInfoAtom);
   const setUserInfo = useSetAtom(userInfoAtom);
-  const { isLoading: isAuthLoading } = useUser();
+  console.log(currentUser);
+  const { user, isLoading: isAuthLoading } = useUser();
+
+  useEffect(() => {
+    if (!currentUser && !isAuthLoading && user) {
+      fetchUserInfo();
+    }
+  }, [currentUser, isAuthLoading, user]);
 
   const fetchUserInfo = async (forceUpdate = false) => {
     try {
@@ -33,14 +41,10 @@ export function useCurrentUser() {
     }
   };
 
-  if (!currentUser && !isAuthLoading) {
-    fetchUserInfo();
-  }
-
   return {
     currentUser,
     fetchUserInfo, // 明示的な更新用
     refreshUserInfo: () => fetchUserInfo(true), // 強制更新用のエイリアス
-    isLoading: !currentUser,
+    isLoading: isAuthLoading,
   };
 }
