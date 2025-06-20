@@ -1,45 +1,61 @@
-import Image from "next/image";
-import styles from "./page.module.css";
-import { UserInfo } from "@/app/_components/UserInfo";
+"use client";
 
-export default async function Home() {
+import { useUser } from "@auth0/nextjs-auth0";
+import { DiveLogList } from "./_components/DiveLogList";
+import { useState, useEffect } from "react";
+import { getAccessToken } from "@auth0/nextjs-auth0";
+import { DiveLog } from "@/types/diveLog";
+
+export default function Home() {
+  const { user, isLoading } = useUser();
+  const [logs, setLogs] = useState<DiveLog[]>([]);
+  const [loadingLogs, setLoadingLogs] = useState(false);
+
+  useEffect(() => {
+    const fetchLogs = async () => {
+      if (!user) return;
+
+      setLoadingLogs(true);
+      try {
+        const token = await getAccessToken();
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/me/logs`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          setLogs(data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch logs:", error);
+      } finally {
+        setLoadingLogs(false);
+      }
+    };
+
+    fetchLogs();
+  }, [user]);
+
+  if (isLoading || loadingLogs) return <div>Loading...</div>;
+
+  if (!user) {
+    return (
+      <div className="container mx-auto p-4">
+        <h1 className="text-2xl font-bold mb-4">ようこそ</h1>
+        <p>ログインするとダイビングログを管理できます</p>
+      </div>
+    );
+  }
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="/auth/login"
-            rel="noopener noreferrer"
-          >
-            ログイン/新規登録
-          </a>
-          <a
-            href="/auth/logout"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            ログアウト
-          </a>
-        </div>
-        <UserInfo />
-      </main>
-      <footer className={styles.footer}>なんか書いとけ</footer>
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-6">マイダイビングログ</h1>
+      <DiveLogList logs={logs} currentUserId={user.sub} />
     </div>
   );
 }
