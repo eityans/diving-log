@@ -1,6 +1,7 @@
 "use client";
 
 import { DiveLog } from "@/types/diveLog";
+import { DeleteLogButton } from "./DeleteLogButton";
 
 interface DiveLogListProps {
   logs: DiveLog[];
@@ -22,7 +23,10 @@ export function DiveLogList({ logs, currentUserId }: DiveLogListProps) {
           </div>
           <p className="text-sm">ダイビング本数: {log.dive_number}</p>
           {log.user_id === currentUserId && (
-            <button className="text-sm text-blue-500 mt-2">編集</button>
+            <div className="flex gap-2 mt-2">
+              <button className="text-sm text-blue-500">編集</button>
+              <DeleteLogButton logId={log.id} />
+            </div>
           )}
         </div>
       ))}

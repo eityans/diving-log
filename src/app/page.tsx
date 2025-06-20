@@ -7,7 +7,6 @@ import { DiveLog } from "@/types/diveLog";
 import { useCurrentUser } from "@/lib/hooks/useCurrentUser";
 import { LogoutButton } from "@/app/_components/LogoutButton";
 import Link from "next/link";
-import { Button } from "@mui/material";
 
 export default function Home() {
   const { currentUser, isLoading } = useCurrentUser();
@@ -64,15 +63,12 @@ export default function Home() {
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">マイダイビングログ</h1>
-        <Button
-          component={Link}
+        <Link
           href="/log/new"
-          variant="contained"
-          color="primary"
-          sx={{ py: 1.5, px: 3 }}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium shadow-md transition-colors"
         >
           ログを登録
-        </Button>
+        </Link>
       </div>
       <DiveLogList logs={logs} currentUserId={currentUser.id} />
       <LogoutButton />
