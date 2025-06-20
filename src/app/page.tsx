@@ -25,14 +25,12 @@ export default async function Home() {
           <a
             className={styles.primary}
             href="/auth/login"
-            target="_blank"
             rel="noopener noreferrer"
           >
             ログイン/新規登録
           </a>
           <a
             href="/auth/logout"
-            target="_blank"
             rel="noopener noreferrer"
             className={styles.secondary}
           >
