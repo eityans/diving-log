@@ -17,7 +17,8 @@ export default function NewLogPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
     date: "",
-    location: "",
+    spot_name: "",
+    dive_number: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -104,11 +105,28 @@ export default function NewLogPage() {
 
           <TextField
             label="場所"
-            name="location"
-            value={formData.location}
+            name="spot_name"
+            value={formData.spot_name}
             onChange={handleChange}
             required
             fullWidth
+            sx={{
+              "& .MuiInputBase-root": {
+                backgroundColor: "background.paper",
+                color: "text.primary",
+              },
+            }}
+          />
+
+          <TextField
+            label="ダイビング本数"
+            name="dive_number"
+            type="number"
+            value={formData.dive_number}
+            onChange={handleChange}
+            required
+            fullWidth
+            inputProps={{ min: 1 }}
             sx={{
               "& .MuiInputBase-root": {
                 backgroundColor: "background.paper",
