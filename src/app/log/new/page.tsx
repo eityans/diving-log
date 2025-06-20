@@ -1,8 +1,9 @@
 "use client";
 
-import { useUser, getAccessToken } from "@auth0/nextjs-auth0";
+import { getAccessToken } from "@auth0/nextjs-auth0";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { useCurrentUser } from "@/lib/hooks/useUserInfo";
 
 import {
   Container,
@@ -14,46 +15,26 @@ import {
 } from "@mui/material";
 
 export default function NewLogPage() {
-  const { user, isLoading } = useUser();
+  const { currentUser, isLoading: isUserLoading } = useCurrentUser();
   const router = useRouter();
   const [formData, setFormData] = useState({
     date: "",
     spot_name: "",
     dive_number: "",
-    user_id: "",
+    user_id: currentUser?.id || "",
   });
 
   useEffect(() => {
-    const fetchUserId = async () => {
-      try {
-        const token = await getAccessToken();
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/me`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        if (response.ok) {
-          const userData = await response.json();
-          setFormData((prev) => ({ ...prev, user_id: userData.id }));
-        }
-      } catch (error) {
-        console.error("Failed to fetch user ID:", error);
-      }
-    };
-
-    if (user && !formData.user_id) {
-      fetchUserId();
+    if (currentUser?.id) {
+      setFormData((prev) => ({ ...prev, user_id: currentUser.id }));
     }
-  }, [user]);
+  }, [currentUser]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-  if (isLoading) return <div>Loading...</div>;
-  if (!user) {
+  if (isUserLoading) return <div>Loading...</div>;
+  if (!currentUser) {
     router.push("/");
     return null;
   }
@@ -81,7 +62,11 @@ export default function NewLogPage() {
       if (!response.ok) {
         throw new Error("登録に失敗しました");
       }
-      router.push(`/users/${formData.user_id}`);
+      if (currentUser?.id) {
+        router.push(`/users/${currentUser.id}`);
+      } else {
+        router.push("/");
+      }
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "予期せぬエラーが発生しました"
@@ -102,6 +87,7 @@ export default function NewLogPage() {
         <Typography variant="h4" component="h1" gutterBottom>
           ダイビングログ登録
         </Typography>
+        {currentUser?.id}
 
         {error && (
           <Alert severity="error" sx={{ mb: 2 }}>
