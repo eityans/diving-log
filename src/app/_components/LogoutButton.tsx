@@ -3,6 +3,7 @@
 import { useSetAtom } from "jotai";
 import { userInfoAtom } from "@/lib/jotai/userAtoms";
 import { useRouter } from "next/navigation";
+import { Button } from "@mui/material";
 
 export function LogoutButton() {
   const setUserInfo = useSetAtom(userInfoAtom);
@@ -16,11 +17,14 @@ export function LogoutButton() {
   };
 
   return (
-    <button
+    <Button
       onClick={handleLogout}
-      className="text-sm text-blue-500 hover:text-blue-700"
+      variant="outlined"
+      color="inherit"
+      size="small"
+      sx={{ mt: 2 }}
     >
       ログアウト
-    </button>
+    </Button>
   );
 }
