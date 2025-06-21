@@ -226,17 +226,28 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
             />
           </Box>
 
-          <TextField
-            label="ウェイト (kg)"
-            name="weight"
-            type="number"
-            value={formData.weight || ""}
-            onChange={handleChange}
-            fullWidth
-            variant="filled"
-            inputProps={{ step: "0.1", min: 0 }}
-            sx={{ mb: 2 }}
-          />
+          <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+            <TextField
+              label="ウェイト (kg)"
+              name="weight"
+              type="number"
+              value={formData.weight || ""}
+              onChange={handleChange}
+              variant="filled"
+              inputProps={{ step: "0.1", min: 0 }}
+              sx={{ flex: 1 }}
+            />
+            <TextField
+              label="透明度 (m)"
+              name="visibility"
+              type="number"
+              value={formData.visibility || ""}
+              onChange={handleChange}
+              variant="filled"
+              inputProps={{ step: "0.1", min: 0 }}
+              sx={{ flex: 1 }}
+            />
+          </Box>
 
           <TextField
             label="機材"
