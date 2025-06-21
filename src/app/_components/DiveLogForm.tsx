@@ -95,7 +95,6 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
         ダイビングログ
         {isEdit ? "編集" : "登録"}
       </Typography>
-      {currentUser?.max_dive_number}
 
       {error && (
         <Alert severity="error" sx={{ mb: 2, whiteSpace: "pre-wrap" }}>
