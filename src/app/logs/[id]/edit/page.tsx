@@ -59,7 +59,7 @@ export default function EditLogPage() {
           color="secondary"
           fullWidth
           sx={{ py: 2, mt: 2 }}
-          onClick={() => router.push("/")}
+          onClick={() => router.push(`/logs/${id}`)}
         >
           戻る
         </Button>

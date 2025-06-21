@@ -110,6 +110,10 @@ export default function DiveLogDetail() {
                 <span className="text-gray-500">最低水温: </span>
                 {log.min_temp ? `${log.min_temp}°C` : "-"}
               </div>
+              <div>
+                <span className="text-gray-500">透明度: </span>
+                {log.visibility ? `${log.visibility}m` : "-"}
+              </div>
             </Box>
           </Paper>
         </Box>
