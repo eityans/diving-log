@@ -72,20 +72,30 @@ export default function Home() {
 
   return (
     <Box sx={{ maxWidth: 800, mx: "auto", p: 4 }}>
-      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 4 }}>
-        <Typography variant="h4" component="h1" fontWeight="bold">
-          マイダイビングログ
-        </Typography>
+      <Typography
+        variant="h4"
+        component="h1"
+        fontWeight="bold"
+        mb={4}
+        textAlign="center"
+      >
+        マイダイビングログ
+      </Typography>
+
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mb: 4 }}>
         <Button
           component={Link}
           href="/log/new"
           variant="contained"
           color="primary"
+          fullWidth
         >
           ログを登録
         </Button>
       </Box>
+
       <DiveLogList logs={logs} />
+
       <Box sx={{ mt: 4, display: "flex", justifyContent: "center" }}>
         <LogoutButton />
       </Box>
