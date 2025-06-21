@@ -7,7 +7,7 @@ import { DiveLog } from "@/types/diveLog";
 import { useCurrentUser } from "@/lib/hooks/useCurrentUser";
 import { LogoutButton } from "@/app/_components/LogoutButton";
 import Link from "next/link";
-import { Button } from "@mui/material";
+import { Button, Box, Typography } from "@mui/material";
 
 export default function Home() {
   const { currentUser, isLoading } = useCurrentUser();
@@ -50,26 +50,32 @@ export default function Home() {
 
   if (!currentUser) {
     return (
-      <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">ようこそ</h1>
-        <p>ログインするとダイビングログを管理できます</p>
+      <Box sx={{ maxWidth: 800, mx: "auto", p: 4, textAlign: "center" }}>
+        <Typography variant="h4" component="h1" fontWeight="bold" mb={2}>
+          ようこそ
+        </Typography>
+        <Typography variant="body1" mb={4}>
+          ログインするとダイビングログを管理できます
+        </Typography>
         <Button
           component="a"
           href="/auth/login"
           variant="contained"
           color="primary"
-          sx={{ mt: 2 }}
+          size="large"
         >
           ログイン/新規登録
         </Button>
-      </div>
+      </Box>
     );
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">マイダイビングログ</h1>
+    <Box sx={{ maxWidth: 800, mx: "auto", p: 4 }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 4 }}>
+        <Typography variant="h4" component="h1" fontWeight="bold">
+          マイダイビングログ
+        </Typography>
         <Button
           component={Link}
           href="/log/new"
@@ -78,9 +84,11 @@ export default function Home() {
         >
           ログを登録
         </Button>
-      </div>
+      </Box>
       <DiveLogList logs={logs} />
-      <LogoutButton />
-    </div>
+      <Box sx={{ mt: 4, display: "flex", justifyContent: "center" }}>
+        <LogoutButton />
+      </Box>
+    </Box>
   );
 }
