@@ -4,7 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { DiveLog } from "@/types/diveLog";
 import { useCurrentUser } from "@/lib/hooks/useCurrentUser";
-import { Button } from "@mui/material";
+import { Button, Box, Typography, Paper } from "@mui/material";
 import Link from "next/link";
 import { DeleteLogButton } from "@/app/_components/DeleteLogButton";
 
@@ -46,19 +46,30 @@ export default function DiveLogDetail() {
   if (!log) return <div className="text-center py-8">ログが見つかりません</div>;
 
   return (
-    <div className="max-w-3xl mx-auto py-8 px-4">
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">{log.spot_name}</h1>
-          <div className="text-gray-500">
+    <Box sx={{ maxWidth: 800, mx: "auto", p: 4 }}>
+      <Paper elevation={3} sx={{ p: 4 }}>
+        <Box sx={{ display: "flex", justifyContent: "space-between", mb: 4 }}>
+          <Typography variant="h4" component="h1" fontWeight="bold">
+            {log.spot_name}
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
             {log.date} #{log.dive_number}
-          </div>
-        </div>
+          </Typography>
+        </Box>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <h2 className="text-lg font-medium mb-3">ダイビング情報</h2>
-            <div className="space-y-2">
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
+            gap: 3,
+            mb: 4,
+          }}
+        >
+          <Paper variant="outlined" sx={{ p: 3 }}>
+            <Typography variant="h6" component="h2" mb={2}>
+              ダイビング情報
+            </Typography>
+            <Box sx={{ display: "grid", gap: 1 }}>
               <div>
                 <span className="text-gray-500">平均深度: </span>
                 {log.average_depth ? `${log.average_depth}m` : "-"}
@@ -75,20 +86,6 @@ export default function DiveLogDetail() {
                 <span className="text-gray-500">エキジット時刻: </span>
                 {log.exit_time || "-"}
               </div>
-            </div>
-          </div>
-
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <h2 className="text-lg font-medium mb-3">環境情報</h2>
-            <div className="space-y-2">
-              <div>
-                <span className="text-gray-500">最高水温: </span>
-                {log.max_temp ? `${log.max_temp}°C` : "-"}
-              </div>
-              <div>
-                <span className="text-gray-500">最低水温: </span>
-                {log.min_temp ? `${log.min_temp}°C` : "-"}
-              </div>
               <div>
                 <span className="text-gray-500">ガイド: </span>
                 {log.guide_name || "-"}
@@ -97,19 +94,52 @@ export default function DiveLogDetail() {
                 <span className="text-gray-500">ウェイト: </span>
                 {log.weight ? `${log.weight}kg` : "-"}
               </div>
-            </div>
-          </div>
-        </div>
+            </Box>
+          </Paper>
+
+          <Paper variant="outlined" sx={{ p: 3 }}>
+            <Typography variant="h6" component="h2" mb={2}>
+              環境情報
+            </Typography>
+            <Box sx={{ display: "grid", gap: 1 }}>
+              <div>
+                <span className="text-gray-500">最高水温: </span>
+                {log.max_temp ? `${log.max_temp}°C` : "-"}
+              </div>
+              <div>
+                <span className="text-gray-500">最低水温: </span>
+                {log.min_temp ? `${log.min_temp}°C` : "-"}
+              </div>
+            </Box>
+          </Paper>
+        </Box>
+
+        {log.equipment && (
+          <Paper variant="outlined" sx={{ p: 3, mb: 4 }}>
+            <Typography variant="h6" component="h2" mb={2}>
+              器材
+            </Typography>
+            <Typography variant="body1" sx={{ whiteSpace: "pre-wrap" }}>
+              {log.equipment}
+            </Typography>
+          </Paper>
+        )}
 
         {log.memo && (
-          <div className="bg-gray-50 p-4 rounded-lg mb-8">
-            <h2 className="text-lg font-medium mb-3">メモ</h2>
-            <p className="whitespace-pre-wrap">{log.memo}</p>
-          </div>
+          <Paper variant="outlined" sx={{ p: 3, mb: 4 }}>
+            <Typography variant="h6" component="h2" mb={2}>
+              メモ
+            </Typography>
+            <Typography variant="body1" sx={{ whiteSpace: "pre-wrap" }}>
+              {log.memo}
+            </Typography>
+          </Paper>
         )}
 
         {log.user_id === currentUser?.id && (
-          <div className="flex gap-4 justify-end">
+          <Box
+            sx={{ display: "flex", gap: 2, justifyContent: "flex-end", mb: 4 }}
+          >
             <Button
               component={Link}
               href={`/logs/${log.id}/edit`}
@@ -119,9 +149,22 @@ export default function DiveLogDetail() {
               編集
             </Button>
             <DeleteLogButton logId={log.id} />
-          </div>
+          </Box>
         )}
-      </div>
-    </div>
+
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <Button
+            component={Link}
+            href="/"
+            variant="outlined"
+            color="primary"
+            fullWidth
+            sx={{ maxWidth: 400 }}
+          >
+            トップへ戻る
+          </Button>
+        </Box>
+      </Paper>
+    </Box>
   );
 }
