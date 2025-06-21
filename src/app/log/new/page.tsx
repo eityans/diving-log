@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useCurrentUser } from "@/lib/hooks/useCurrentUser";
 import { DiveLogForm } from "@/app/_components/DiveLogForm";
+import { Button, Container, Box } from "@mui/material";
 
 export default function NewLogPage() {
   const { currentUser, isLoading } = useCurrentUser();
@@ -14,5 +15,20 @@ export default function NewLogPage() {
     return null;
   }
 
-  return <DiveLogForm />;
+  return (
+    <Container maxWidth="sm">
+      <Box sx={{ mt: 4, mb: 4 }}>
+        <DiveLogForm />
+        <Button
+          variant="outlined"
+          color="secondary"
+          fullWidth
+          sx={{ py: 2, mt: 2 }}
+          onClick={() => router.push("/")}
+        >
+          トップに戻る
+        </Button>
+      </Box>
+    </Container>
+  );
 }
