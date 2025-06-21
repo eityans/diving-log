@@ -30,7 +30,6 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
         ? currentUser.max_dive_number + 1
         : 1,
       user_id: currentUser?.id || "",
-      // 他のフィールドも追加
     }
   );
 
@@ -72,7 +71,7 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
       .then((response) => {
         if (!response.ok) {
           return response.json().then((errorData) => {
-            throw new Error(errorData.exception || "保存に失敗しました"); // TODO:　適切なエラーメッセージ表示
+            throw new Error(errorData.exception || "保存に失敗しました");
           });
         }
         router.push("/");
@@ -112,28 +111,53 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
         )}
 
         <Box component="form" onSubmit={handleSubmit}>
-          <TextField
-            label="ダイビングNo."
-            name="dive_number"
-            type="number"
-            value={formData.dive_number}
-            onChange={handleChange}
-            required
-            fullWidth
-            variant="filled"
-            inputProps={{ min: 1 }}
-          />
+          <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+            <TextField
+              label="ダイビングNo."
+              name="dive_number"
+              type="number"
+              value={formData.dive_number}
+              onChange={handleChange}
+              required
+              variant="filled"
+              inputProps={{ min: 1 }}
+              sx={{ flex: 1 }}
+            />
+            <TextField
+              label="日付"
+              type="date"
+              name="date"
+              value={formData.date}
+              onChange={handleChange}
+              required
+              variant="filled"
+              InputLabelProps={{ shrink: true }}
+              sx={{ flex: 2 }}
+            />
+          </Box>
 
-          <TextField
-            label="日付"
-            type="date"
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
-            required
-            fullWidth
-            variant="filled"
-          />
+          <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+            <TextField
+              label="エントリー時刻"
+              name="entry_time"
+              type="time"
+              value={formData.entry_time || ""}
+              onChange={handleChange}
+              variant="filled"
+              InputLabelProps={{ shrink: true }}
+              sx={{ flex: 1 }}
+            />
+            <TextField
+              label="エキジット時刻"
+              name="exit_time"
+              type="time"
+              value={formData.exit_time || ""}
+              onChange={handleChange}
+              variant="filled"
+              InputLabelProps={{ shrink: true }}
+              sx={{ flex: 1 }}
+            />
+          </Box>
 
           <TextField
             label="場所"
@@ -143,50 +167,7 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
             required
             fullWidth
             variant="filled"
-          />
-
-          <TextField
-            label="平均深度 (m)"
-            name="average_depth"
-            type="number"
-            value={formData.average_depth || ""}
-            onChange={handleChange}
-            fullWidth
-            variant="filled"
-            inputProps={{ step: "0.1", min: 0 }}
-          />
-
-          <TextField
-            label="最大深度 (m)"
-            name="max_depth"
-            type="number"
-            value={formData.max_depth || ""}
-            onChange={handleChange}
-            fullWidth
-            variant="filled"
-            inputProps={{ step: "0.1", min: 0 }}
-          />
-
-          <TextField
-            label="エントリー時刻"
-            name="entry_time"
-            type="time"
-            value={formData.entry_time || ""}
-            onChange={handleChange}
-            fullWidth
-            variant="filled"
-            InputLabelProps={{ shrink: true }}
-          />
-
-          <TextField
-            label="エキジット時刻"
-            name="exit_time"
-            type="time"
-            value={formData.exit_time || ""}
-            onChange={handleChange}
-            fullWidth
-            variant="filled"
-            InputLabelProps={{ shrink: true }}
+            sx={{ mb: 2 }}
           />
 
           <TextField
@@ -196,40 +177,54 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
             onChange={handleChange}
             fullWidth
             variant="filled"
+            sx={{ mb: 2 }}
           />
 
-          <TextField
-            label="最高水温 (°C)"
-            name="max_temp"
-            type="number"
-            value={formData.max_temp || ""}
-            onChange={handleChange}
-            fullWidth
-            variant="filled"
-            inputProps={{ step: "0.1" }}
-          />
+          <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+            <TextField
+              label="平均深度 (m)"
+              name="average_depth"
+              type="number"
+              value={formData.average_depth || ""}
+              onChange={handleChange}
+              variant="filled"
+              inputProps={{ step: "0.1", min: 0 }}
+              sx={{ flex: 1 }}
+            />
+            <TextField
+              label="最大深度 (m)"
+              name="max_depth"
+              type="number"
+              value={formData.max_depth || ""}
+              onChange={handleChange}
+              variant="filled"
+              inputProps={{ step: "0.1", min: 0 }}
+              sx={{ flex: 1 }}
+            />
+          </Box>
 
-          <TextField
-            label="最低水温 (°C)"
-            name="min_temp"
-            type="number"
-            value={formData.min_temp || ""}
-            onChange={handleChange}
-            fullWidth
-            variant="filled"
-            inputProps={{ step: "0.1" }}
-          />
-
-          <TextField
-            label="機材"
-            name="equipment"
-            value={formData.equipment || ""}
-            onChange={handleChange}
-            fullWidth
-            variant="filled"
-            multiline
-            rows={2}
-          />
+          <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+            <TextField
+              label="最高水温 (°C)"
+              name="max_temp"
+              type="number"
+              value={formData.max_temp || ""}
+              onChange={handleChange}
+              variant="filled"
+              inputProps={{ step: "0.1" }}
+              sx={{ flex: 1 }}
+            />
+            <TextField
+              label="最低水温 (°C)"
+              name="min_temp"
+              type="number"
+              value={formData.min_temp || ""}
+              onChange={handleChange}
+              variant="filled"
+              inputProps={{ step: "0.1" }}
+              sx={{ flex: 1 }}
+            />
+          </Box>
 
           <TextField
             label="ウェイト (kg)"
@@ -240,6 +235,19 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
             fullWidth
             variant="filled"
             inputProps={{ step: "0.1", min: 0 }}
+            sx={{ mb: 2 }}
+          />
+
+          <TextField
+            label="機材"
+            name="equipment"
+            value={formData.equipment || ""}
+            onChange={handleChange}
+            fullWidth
+            variant="filled"
+            multiline
+            rows={3}
+            sx={{ mb: 2 }}
           />
 
           <TextField
@@ -251,6 +259,7 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
             variant="filled"
             multiline
             rows={4}
+            sx={{ mb: 2 }}
           />
 
           <Button
