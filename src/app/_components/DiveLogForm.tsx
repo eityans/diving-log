@@ -25,7 +25,7 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
   const [formData, setFormData] = useState<Partial<DiveLog>>(
     initialData || {
       spot_name: "",
-      date: "",
+      date: new Date().toISOString().split("T")[0],
       dive_number: 0,
       user_id: currentUser?.id || "",
       // 他のフィールドも追加
@@ -55,31 +55,38 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
 
     const token = currentUser.token;
 
-    try {
-      const url = isEdit
-        ? `${process.env.NEXT_PUBLIC_API_BASE_URL}/dive_logs/${initialData?.id}`
-        : `${process.env.NEXT_PUBLIC_API_BASE_URL}/dive_logs`;
+    const url = isEdit
+      ? `${process.env.NEXT_PUBLIC_API_BASE_URL}/dive_logs/${initialData?.id}`
+      : `${process.env.NEXT_PUBLIC_API_BASE_URL}/dive_logs`;
 
-      const response = await fetch(url, {
-        method: isEdit ? "PUT" : "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(formData),
+    fetch(url, {
+      method: isEdit ? "PUT" : "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then((errorData) => {
+            throw new Error(errorData.exception || "保存に失敗しました"); // TODO:　適切なエラーメッセージ表示
+          });
+        }
+        router.push("/");
+      })
+      .catch((err) => {
+        let errorMessage = "予期せぬエラーが発生しました";
+        if (err instanceof Error) {
+          errorMessage = err.message;
+        } else if (typeof err === "string") {
+          errorMessage = err;
+        }
+        setError(errorMessage);
+      })
+      .finally(() => {
+        setIsSubmitting(false);
       });
-
-      if (!response.ok) throw new Error("保存に失敗しました");
-
-      // 成功時の処理
-      router.push("/");
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "予期せぬエラーが発生しました"
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,7 +104,7 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
         {currentUser?.id}
 
         {error && (
-          <Alert severity="error" sx={{ mb: 2 }}>
+          <Alert severity="error" sx={{ mb: 2, whiteSpace: "pre-wrap" }}>
             {error}
           </Alert>
         )}
