@@ -111,11 +111,7 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
           </Alert>
         )}
 
-        <Box
-          component="form"
-          onSubmit={handleSubmit}
-          sx={{ display: "flex", flexDirection: "column", gap: 3 }}
-        >
+        <Box component="form" onSubmit={handleSubmit}>
           <TextField
             label="ダイビングNo."
             name="dive_number"
@@ -124,13 +120,8 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
             onChange={handleChange}
             required
             fullWidth
+            variant="filled"
             inputProps={{ min: 1 }}
-            sx={{
-              "& .MuiInputBase-root": {
-                backgroundColor: "background.paper",
-                color: "text.primary",
-              },
-            }}
           />
 
           <TextField
@@ -140,14 +131,8 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
             value={formData.date}
             onChange={handleChange}
             required
-            InputLabelProps={{ shrink: true }}
             fullWidth
-            sx={{
-              "& .MuiInputBase-root": {
-                backgroundColor: "background.paper",
-                color: "text.primary",
-              },
-            }}
+            variant="filled"
           />
 
           <TextField
@@ -157,12 +142,7 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
             onChange={handleChange}
             required
             fullWidth
-            sx={{
-              "& .MuiInputBase-root": {
-                backgroundColor: "background.paper",
-                color: "text.primary",
-              },
-            }}
+            variant="filled"
           />
 
           <Button
