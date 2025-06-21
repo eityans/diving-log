@@ -26,7 +26,9 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
     initialData || {
       spot_name: "",
       date: new Date().toISOString().split("T")[0],
-      dive_number: 0,
+      dive_number: currentUser?.max_dive_number
+        ? currentUser.max_dive_number + 1
+        : 1,
       user_id: currentUser?.id || "",
       // 他のフィールドも追加
     }
@@ -101,7 +103,7 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
           ダイビングログ
           {isEdit ? "編集" : "登録"}
         </Typography>
-        {currentUser?.id}
+        {currentUser?.max_dive_number}
 
         {error && (
           <Alert severity="error" sx={{ mb: 2, whiteSpace: "pre-wrap" }}>
