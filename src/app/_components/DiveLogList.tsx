@@ -1,44 +1,58 @@
 "use client";
 
 import { DiveLog } from "@/types/diveLog";
-import { DeleteLogButton } from "./DeleteLogButton";
-import { Button } from "@mui/material";
 import Link from "next/link";
 
 interface DiveLogListProps {
   logs: DiveLog[];
-  currentUserId: string;
 }
 
-export function DiveLogList({ logs, currentUserId }: DiveLogListProps) {
+export function DiveLogList({ logs }: DiveLogListProps) {
   if (logs.length === 0) {
     return <p className="text-gray-500">ログがありません</p>;
   }
 
   return (
-    <div className="space-y-4">
+    <div className="max-w-3xl mx-auto space-y-4">
       {logs.map((log) => (
-        <div key={log.id} className="border p-4 rounded-lg">
-          <div className="flex justify-between">
-            <h3 className="font-medium">{log.spot_name}</h3>
-            <span className="text-sm text-gray-500">{log.date}</span>
-          </div>
-          <p className="text-sm">ダイビング本数: {log.dive_number}</p>
-          {log.user_id === currentUserId && (
-            <div className="flex gap-2 mt-2">
-              <Button
-                component={Link}
-                href={`/logs/${log.id}/edit`}
-                size="small"
-                color="primary"
-                variant="outlined"
-              >
-                編集
-              </Button>
-              <DeleteLogButton logId={log.id} />
+        <Link href={`/logs/${log.id}`} key={log.id} className="block">
+          <div className="border p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-bold">{log.spot_name}</h3>
+              <span className="text-gray-500">
+                {log.date} #{log.dive_number}
+              </span>
             </div>
-          )}
-        </div>
+
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div className="bg-gray-50 p-3 rounded">
+                <div className="font-medium text-gray-500">深度</div>
+                <div>
+                  {log.average_depth && `${log.average_depth}m`}
+                  {log.max_depth && ` / ${log.max_depth}m`}
+                </div>
+              </div>
+              <div className="bg-gray-50 p-3 rounded">
+                <div className="font-medium text-gray-500">時刻</div>
+                <div>
+                  {log.entry_time && `${log.entry_time}`}
+                  {log.exit_time && ` - ${log.exit_time}`}
+                </div>
+              </div>
+              <div className="bg-gray-50 p-3 rounded">
+                <div className="font-medium text-gray-500">水温</div>
+                <div>
+                  {log.min_temp && `${log.min_temp}°C`}
+                  {log.max_temp && ` / ${log.max_temp}°C`}
+                </div>
+              </div>
+              <div className="bg-gray-50 p-3 rounded">
+                <div className="font-medium text-gray-500">ガイド</div>
+                <div>{log.guide_name}</div>
+              </div>
+            </div>
+          </div>
+        </Link>
       ))}
     </div>
   );

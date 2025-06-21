@@ -79,7 +79,7 @@ export default function Home() {
           ログを登録
         </Button>
       </div>
-      <DiveLogList logs={logs} currentUserId={currentUser.id} />
+      <DiveLogList logs={logs} />
       <LogoutButton />
     </div>
   );
