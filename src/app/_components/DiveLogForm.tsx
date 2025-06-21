@@ -12,7 +12,7 @@ export interface DiveLogFormProps {
 }
 
 export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
-  const { currentUser, isLoading } = useCurrentUser();
+  const { currentUser, isLoading, refreshUserInfo } = useCurrentUser();
   const router = useRouter();
   const [formData, setFormData] = useState<Partial<DiveLog>>(
     initialData || {
@@ -66,6 +66,8 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
             throw new Error(errorData.exception || "保存に失敗しました");
           });
         }
+
+        refreshUserInfo();
         router.push("/");
       })
       .catch((err) => {
