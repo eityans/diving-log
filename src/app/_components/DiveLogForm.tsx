@@ -145,6 +145,103 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
             variant="filled"
           />
 
+          <TextField
+            label="平均深度 (m)"
+            name="average_depth"
+            type="number"
+            value={formData.average_depth || ""}
+            onChange={handleChange}
+            fullWidth
+            variant="filled"
+            inputProps={{ step: "0.1", min: 0 }}
+          />
+
+          <TextField
+            label="最大深度 (m)"
+            name="max_depth"
+            type="number"
+            value={formData.max_depth || ""}
+            onChange={handleChange}
+            fullWidth
+            variant="filled"
+            inputProps={{ step: "0.1", min: 0 }}
+          />
+
+          <TextField
+            label="エントリー時刻"
+            name="entry_time"
+            type="time"
+            value={formData.entry_time || ""}
+            onChange={handleChange}
+            fullWidth
+            variant="filled"
+            InputLabelProps={{ shrink: true }}
+          />
+
+          <TextField
+            label="エキジット時刻"
+            name="exit_time"
+            type="time"
+            value={formData.exit_time || ""}
+            onChange={handleChange}
+            fullWidth
+            variant="filled"
+            InputLabelProps={{ shrink: true }}
+          />
+
+          <TextField
+            label="ガイド名"
+            name="guide_name"
+            value={formData.guide_name || ""}
+            onChange={handleChange}
+            fullWidth
+            variant="filled"
+          />
+
+          <TextField
+            label="最高水温 (°C)"
+            name="max_temp"
+            type="number"
+            value={formData.max_temp || ""}
+            onChange={handleChange}
+            fullWidth
+            variant="filled"
+            inputProps={{ step: "0.1" }}
+          />
+
+          <TextField
+            label="最低水温 (°C)"
+            name="min_temp"
+            type="number"
+            value={formData.min_temp || ""}
+            onChange={handleChange}
+            fullWidth
+            variant="filled"
+            inputProps={{ step: "0.1" }}
+          />
+
+          <TextField
+            label="機材"
+            name="equipment"
+            value={formData.equipment || ""}
+            onChange={handleChange}
+            fullWidth
+            variant="filled"
+            multiline
+            rows={2}
+          />
+
+          <TextField
+            label="ウェイト (kg)"
+            name="weight"
+            type="number"
+            value={formData.weight || ""}
+            onChange={handleChange}
+            fullWidth
+            variant="filled"
+            inputProps={{ step: "0.1", min: 0 }}
+          />
+
           <Button
             type="submit"
             variant="contained"
