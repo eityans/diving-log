@@ -2,6 +2,14 @@
 
 import { DiveLog } from "@/types/diveLog";
 import Link from "next/link";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Box,
+  Paper,
+  ButtonBase,
+} from "@mui/material";
 
 interface DiveLogListProps {
   logs: DiveLog[];
@@ -9,51 +17,81 @@ interface DiveLogListProps {
 
 export function DiveLogList({ logs }: DiveLogListProps) {
   if (logs.length === 0) {
-    return <p className="text-gray-500">ログがありません</p>;
+    return (
+      <Typography variant="body1" color="text.secondary" textAlign="center">
+        ログがありません
+      </Typography>
+    );
   }
 
   return (
-    <div className="max-w-3xl mx-auto space-y-4">
+    <Box sx={{ maxWidth: 800, mx: "auto", my: 4 }}>
       {logs.map((log) => (
-        <Link href={`/logs/${log.id}`} key={log.id} className="block">
-          <div className="border p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-bold">{log.spot_name}</h3>
-              <span className="text-gray-500">
-                {log.date} #{log.dive_number}
-              </span>
-            </div>
+        <ButtonBase
+          key={log.id}
+          component={Link}
+          href={`/logs/${log.id}`}
+          sx={{ display: "block", textAlign: "left", mb: 2 }}
+        >
+          <Card elevation={3} sx={{ borderRadius: 2 }}>
+            <CardContent>
+              <Box
+                sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}
+              >
+                <Typography variant="h6" component="h3" fontWeight="bold">
+                  {log.spot_name}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {log.date} #{log.dive_number}
+                </Typography>
+              </Box>
 
-            <div className="grid grid-cols-2 gap-4 text-sm">
-              <div className="bg-gray-50 p-3 rounded">
-                <div className="font-medium text-gray-500">深度</div>
-                <div>
-                  {log.average_depth && `${log.average_depth}m`}
-                  {log.max_depth && ` / ${log.max_depth}m`}
-                </div>
-              </div>
-              <div className="bg-gray-50 p-3 rounded">
-                <div className="font-medium text-gray-500">時刻</div>
-                <div>
-                  {log.entry_time && `${log.entry_time}`}
-                  {log.exit_time && ` - ${log.exit_time}`}
-                </div>
-              </div>
-              <div className="bg-gray-50 p-3 rounded">
-                <div className="font-medium text-gray-500">水温</div>
-                <div>
-                  {log.min_temp && `${log.min_temp}°C`}
-                  {log.max_temp && ` / ${log.max_temp}°C`}
-                </div>
-              </div>
-              <div className="bg-gray-50 p-3 rounded">
-                <div className="font-medium text-gray-500">ガイド</div>
-                <div>{log.guide_name}</div>
-              </div>
-            </div>
-          </div>
-        </Link>
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(2, 1fr)",
+                  gap: 2,
+                  width: "100%",
+                }}
+              >
+                <Paper elevation={0} sx={{ p: 2, bgcolor: "grey.100" }}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    深度
+                  </Typography>
+                  <Typography>
+                    {log.average_depth && `${log.average_depth}m`}
+                    {log.max_depth && ` / ${log.max_depth}m`}
+                  </Typography>
+                </Paper>
+                <Paper elevation={0} sx={{ p: 2, bgcolor: "grey.100" }}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    時刻
+                  </Typography>
+                  <Typography>
+                    {log.entry_time && `${log.entry_time}`}
+                    {log.exit_time && ` - ${log.exit_time}`}
+                  </Typography>
+                </Paper>
+                <Paper elevation={0} sx={{ p: 2, bgcolor: "grey.100" }}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    水温
+                  </Typography>
+                  <Typography>
+                    {log.min_temp && `${log.min_temp}°C`}
+                    {log.max_temp && ` / ${log.max_temp}°C`}
+                  </Typography>
+                </Paper>
+                <Paper elevation={0} sx={{ p: 2, bgcolor: "grey.100" }}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    ガイド
+                  </Typography>
+                  <Typography>{log.guide_name}</Typography>
+                </Paper>
+              </Box>
+            </CardContent>
+          </Card>
+        </ButtonBase>
       ))}
-    </div>
+    </Box>
   );
 }
