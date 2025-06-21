@@ -242,6 +242,17 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
             inputProps={{ step: "0.1", min: 0 }}
           />
 
+          <TextField
+            label="メモ"
+            name="memo"
+            value={formData.memo || ""}
+            onChange={handleChange}
+            fullWidth
+            variant="filled"
+            multiline
+            rows={4}
+          />
+
           <Button
             type="submit"
             variant="contained"

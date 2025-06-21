@@ -13,6 +13,7 @@ export interface DiveLog {
   min_temp?: number;
   equipment?: string;
   weight?: number;
+  memo?: string;
   created_at?: string;
   updated_at?: string;
 }
