@@ -87,6 +87,14 @@ export function DiveLogList({ logs }: DiveLogListProps) {
                   </Typography>
                   <Typography>{log.guide_name}</Typography>
                 </Paper>
+                <Paper elevation={0} sx={{ p: 2, bgcolor: "grey.100" }}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    残圧
+                  </Typography>
+                  <Typography>
+                    {log.air_remaining && `${log.air_remaining}bar`}
+                  </Typography>
+                </Paper>
               </Box>
             </CardContent>
           </Card>

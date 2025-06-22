@@ -239,6 +239,16 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
             inputProps={{ step: "0.1", min: 0 }}
             sx={{ flex: 1 }}
           />
+          <TextField
+            label="残圧 (bar)"
+            name="air_remaining"
+            type="number"
+            value={formData.air_remaining || ""}
+            onChange={handleChange}
+            variant="filled"
+            inputProps={{ step: "1", min: 0 }}
+            sx={{ flex: 1 }}
+          />
         </Box>
 
         <TextField

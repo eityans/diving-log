@@ -94,6 +94,10 @@ export default function DiveLogDetail() {
                 <span className="text-gray-500">ウェイト: </span>
                 {log.weight ? `${log.weight}kg` : "-"}
               </div>
+              <div>
+                <span className="text-gray-500">残圧: </span>
+                {log.air_remaining ? `${log.air_remaining}bar` : "-"}
+              </div>
             </Box>
           </Paper>
 
@@ -114,6 +118,7 @@ export default function DiveLogDetail() {
                 <span className="text-gray-500">透明度: </span>
                 {log.visibility ? `${log.visibility}m` : "-"}
               </div>
+              
             </Box>
           </Paper>
         </Box>
