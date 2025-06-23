@@ -8,7 +8,7 @@ import { useCurrentUser } from "@/lib/hooks/useCurrentUser";
 import { LogoutButton } from "@/app/_components/LogoutButton";
 import Link from "next/link";
 import { Button, Box, Typography } from "@mui/material";
-import { ServerLoading } from "@/app/_components/ServerLoading";
+//import { ServerLoading } from "@/app/_components/ServerLoading";
 
 export default function Home() {
   const { currentUser, isLoading } = useCurrentUser();
@@ -49,16 +49,17 @@ export default function Home() {
 
   if (isLoading || loadingLogs) {
     return (
-      <ServerLoading
-        loading={true}
-        debugInfo={{
-          currentState: isLoading ? "User Loading" : "Logs Loading",
-          currentUser: currentUser ?? undefined,
-          isLoading: isLoading ?? undefined,
-          loadingLogs,
-          error: undefined,
-        }}
-      />
+      <>loading</>
+      // <ServerLoading
+      //   loading={true}
+      //   debugInfo={{
+      //     currentState: isLoading ? "User Loading" : "Logs Loading",
+      //     currentUser: currentUser ?? undefined,
+      //     isLoading: isLoading ?? undefined,
+      //     loadingLogs,
+      //     error: undefined,
+      //   }}
+      // />
     );
   }
 
