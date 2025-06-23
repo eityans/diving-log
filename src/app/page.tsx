@@ -53,6 +53,7 @@ export default function Home() {
         loading={true}
         debugInfo={{
           currentState: isLoading ? "User Loading" : "Logs Loading",
+          currentUser: currentUser ?? undefined,
           isLoading: isLoading ?? undefined,
           loadingLogs,
           error: undefined,

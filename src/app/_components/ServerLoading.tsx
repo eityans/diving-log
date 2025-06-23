@@ -1,5 +1,6 @@
 "use client";
 
+import { User } from "@/types/user";
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
@@ -8,6 +9,7 @@ interface ServerLoadingProps {
   timeout?: number;
   debugInfo?: {
     currentState: string;
+    currentUser?: User;
     isLoading?: boolean;
     loadingLogs?: boolean;
     error?: string | null;
@@ -70,6 +72,11 @@ export function ServerLoading({
               <Typography variant="caption" component="div">
                 State: {debugInfo.currentState}
               </Typography>
+              {debugInfo.currentUser !== undefined && (
+                <Typography variant="caption" component="div">
+                  isLoading: {debugInfo.currentUser.toString()}
+                </Typography>
+              )}
               {debugInfo.isLoading !== undefined && (
                 <Typography variant="caption" component="div">
                   isLoading: {debugInfo.isLoading.toString()}
