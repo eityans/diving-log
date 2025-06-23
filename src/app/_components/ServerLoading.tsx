@@ -3,6 +3,7 @@
 import { User } from "@/types/user";
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import { LogoutButton } from "./LogoutButton";
 
 interface ServerLoadingProps {
   loading: boolean;
@@ -22,15 +23,25 @@ export function ServerLoading({
   debugInfo,
 }: ServerLoadingProps) {
   const [showServerStartMessage, setShowServerStartMessage] = useState(false);
+  const [showLogoutSuggestion, setShowLogoutSuggestion] = useState(false);
 
   useEffect(() => {
     if (loading) {
-      const timer = setTimeout(() => {
+      const timer1 = setTimeout(() => {
         setShowServerStartMessage(true);
       }, timeout);
-      return () => clearTimeout(timer);
+
+      const timer2 = setTimeout(() => {
+        setShowLogoutSuggestion(true);
+      }, timeout * 2); // ログアウト提案は2倍の時間後に表示
+
+      return () => {
+        clearTimeout(timer1);
+        clearTimeout(timer2);
+      };
     } else {
       setShowServerStartMessage(false);
+      setShowLogoutSuggestion(false);
     }
   }, [loading, timeout]);
 
@@ -50,6 +61,7 @@ export function ServerLoading({
       }}
     >
       <Typography variant="h6">Loading...</Typography>
+
       {showServerStartMessage && (
         <>
           <Typography variant="body2" color="text.secondary">
@@ -74,7 +86,7 @@ export function ServerLoading({
               </Typography>
               {debugInfo.currentUser !== undefined && (
                 <Typography variant="caption" component="div">
-                  isLoading: {debugInfo.currentUser.toString()}
+                  User: {debugInfo.currentUser.toString()}
                 </Typography>
               )}
               {debugInfo.isLoading !== undefined && (
@@ -95,6 +107,18 @@ export function ServerLoading({
             </Box>
           )}
         </>
+      )}
+
+      {showLogoutSuggestion && (
+        <Box sx={{ mt: 3, p: 3, border: "1px dashed", borderRadius: 2 }}>
+          <Typography variant="body1" gutterBottom>
+            長時間ローディングが続いています
+          </Typography>
+          <Typography variant="body2" color="text.secondary" gutterBottom>
+            ログアウトして再度ログインすると改善する場合があります
+          </Typography>
+          <LogoutButton />
+        </Box>
       )}
     </Box>
   );
