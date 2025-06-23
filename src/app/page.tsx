@@ -48,7 +48,17 @@ export default function Home() {
   console.log(isLoading);
 
   if (isLoading || loadingLogs) {
-    return <ServerLoading loading={true} />;
+    return (
+      <ServerLoading
+        loading={true}
+        debugInfo={{
+          currentState: isLoading ? "User Loading" : "Logs Loading",
+          isLoading: isLoading ?? undefined,
+          loadingLogs,
+          error: undefined,
+        }}
+      />
+    );
   }
 
   if (!currentUser) {
