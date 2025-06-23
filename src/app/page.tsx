@@ -17,7 +17,7 @@ export default function Home() {
 
   useEffect(() => {
     const fetchLogs = async () => {
-      if (!currentUser) return;
+      if (isLoading) return;
 
       setLoadingLogs(true);
       try {
