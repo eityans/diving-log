@@ -8,6 +8,7 @@ import { useCurrentUser } from "@/lib/hooks/useCurrentUser";
 import { LogoutButton } from "@/app/_components/LogoutButton";
 import Link from "next/link";
 import { Button, Box, Typography } from "@mui/material";
+import { ServerLoading } from "@/app/_components/ServerLoading";
 
 export default function Home() {
   const { currentUser, isLoading } = useCurrentUser();
@@ -46,7 +47,9 @@ export default function Home() {
 
   console.log(isLoading);
 
-  if (isLoading || loadingLogs) return <div>Loading...</div>;
+  if (isLoading || loadingLogs) {
+    return <ServerLoading loading={true} />;
+  }
 
   if (!currentUser) {
     return (
