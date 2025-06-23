@@ -14,6 +14,7 @@ export interface DiveLog {
   equipment?: string;
   weight?: number;
   visibility?: number;
+  air_remaining?: number;
   memo?: string;
   created_at?: string;
   updated_at?: string;
