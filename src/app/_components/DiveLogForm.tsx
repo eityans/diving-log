@@ -16,12 +16,15 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
   const router = useRouter();
   const [formData, setFormData] = useState<Partial<DiveLog>>(
     initialData || {
-      spot_name: "",
+      spot_name: currentUser?.last_dive?.spot_name || "",
       date: new Date().toISOString().split("T")[0],
       dive_number: currentUser?.max_dive_number
         ? currentUser.max_dive_number + 1
         : 1,
       user_id: currentUser?.id || "",
+      weight: currentUser?.last_dive?.weight || undefined,
+      guide_name: currentUser?.last_dive?.guide_name || "",
+      equipment: currentUser?.last_dive?.equipment || "",
     }
   );
 
