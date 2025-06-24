@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { DiveLog } from "@/types/diveLog";
+import { DiveLog, TankMaterial } from "@/types/diveLog";
 import { useCurrentUser } from "@/lib/hooks/useCurrentUser";
 import { Button, Box, Typography, Paper } from "@mui/material";
 import Link from "next/link";
@@ -97,6 +97,18 @@ export default function DiveLogDetail() {
               <div>
                 <span className="text-gray-500">残圧: </span>
                 {log.air_remaining ? `${log.air_remaining}bar` : "-"}
+              </div>
+              <div>
+                <span className="text-gray-500">タンク容量: </span>
+                {log.tank_capacity ? `${log.tank_capacity}L` : "-"}
+              </div>
+              <div>
+                <span className="text-gray-500">タンク種類: </span>
+                {log.tank_material === TankMaterial.Steel
+                  ? "スチール"
+                  : log.tank_material === TankMaterial.Aluminum
+                  ? "アルミ"
+                  : "-"}
               </div>
             </Box>
           </Paper>

@@ -1,6 +1,6 @@
 export enum TankMaterial {
-  Steel = 0,
-  Aluminum = 1,
+  Steel = "steel",
+  Aluminum = "aluminum",
 }
 
 export interface DiveLog {
