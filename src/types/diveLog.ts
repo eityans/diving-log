@@ -1,3 +1,8 @@
+export enum TankMaterial {
+  Steel = 0,
+  Aluminum = 1,
+}
+
 export interface DiveLog {
   id: string;
   user_id: string;
@@ -16,6 +21,8 @@ export interface DiveLog {
   weight?: number;
   visibility?: number;
   air_remaining?: number;
+  tank_capacity?: number;
+  tank_material?: TankMaterial;
   memo?: string;
   created_at?: string;
   updated_at?: string;

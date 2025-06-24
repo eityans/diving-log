@@ -4,7 +4,14 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { DiveLog } from "@/types/diveLog";
 import { useCurrentUser } from "@/lib/hooks/useCurrentUser";
-import { Typography, TextField, Button, Alert, Box } from "@mui/material";
+import {
+  Typography,
+  TextField,
+  Button,
+  Alert,
+  Box,
+  MenuItem,
+} from "@mui/material";
 
 export interface DiveLogFormProps {
   initialData?: DiveLog;
@@ -262,6 +269,28 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
             inputProps={{ step: "1", min: 0 }}
             sx={{ flex: 1 }}
           />
+          <TextField
+            label="タンク容量 (L)"
+            name="tank_capacity"
+            type="number"
+            value={formData.tank_capacity || ""}
+            onChange={handleChange}
+            variant="filled"
+            inputProps={{ min: 0 }}
+            sx={{ flex: 1 }}
+          />
+          <TextField
+            select
+            label="タンク種類"
+            name="tank_material"
+            value={formData.tank_material ?? ""}
+            onChange={handleChange}
+            variant="filled"
+            sx={{ flex: 1 }}
+          >
+            <MenuItem value={"steel"}>スチール</MenuItem>
+            <MenuItem value={"aluminum"}>アルミ</MenuItem>
+          </TextField>
         </Box>
 
         <TextField
