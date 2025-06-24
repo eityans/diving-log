@@ -91,6 +91,10 @@ export default function DiveLogDetail() {
                 {log.guide_name || "-"}
               </div>
               <div>
+                <span className="text-gray-500">ショップ: </span>
+                {log.shop_name || "-"}
+              </div>
+              <div>
                 <span className="text-gray-500">ウェイト: </span>
                 {log.weight ? `${log.weight}kg` : "-"}
               </div>

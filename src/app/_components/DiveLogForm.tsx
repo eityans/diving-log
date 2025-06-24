@@ -163,36 +163,47 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
           />
         </Box>
 
-        <TextField
-          label="場所 (エリア名)"
-          name="spot_name"
-          value={formData.spot_name}
-          onChange={handleChange}
-          required
-          fullWidth
-          variant="filled"
-          sx={{ mb: 2 }}
-        />
+        <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+          <TextField
+            label="場所 (エリア名)"
+            name="spot_name"
+            value={formData.spot_name}
+            onChange={handleChange}
+            required
+            fullWidth
+            variant="filled"
+            sx={{ mb: 2 }}
+          />
 
-        <TextField
-          label="ポイント名"
-          name="point_name"
-          value={formData.point_name || ""}
-          onChange={handleChange}
-          fullWidth
-          variant="filled"
-          sx={{ mb: 2 }}
-        />
+          <TextField
+            label="ポイント名"
+            name="point_name"
+            value={formData.point_name || ""}
+            onChange={handleChange}
+            fullWidth
+            variant="filled"
+            sx={{ mb: 2 }}
+          />
+        </Box>
 
-        <TextField
-          label="ガイド名"
-          name="guide_name"
-          value={formData.guide_name || ""}
-          onChange={handleChange}
-          fullWidth
-          variant="filled"
-          sx={{ mb: 2 }}
-        />
+        <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+          <TextField
+            label="ガイド名"
+            name="guide_name"
+            value={formData.guide_name || ""}
+            onChange={handleChange}
+            fullWidth
+            variant="filled"
+          />
+          <TextField
+            label="ショップ名"
+            name="shop_name"
+            value={formData.shop_name || ""}
+            onChange={handleChange}
+            fullWidth
+            variant="filled"
+          />
+        </Box>
 
         <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
           <TextField

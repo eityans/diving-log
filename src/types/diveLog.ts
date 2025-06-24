@@ -15,6 +15,7 @@ export interface DiveLog {
   entry_time?: string;
   exit_time?: string;
   guide_name?: string;
+  shop_name?: string;
   max_temp?: number;
   min_temp?: number;
   equipment?: string;
