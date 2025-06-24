@@ -253,16 +253,6 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
           />
 
           <TextField
-            label="タンク容量 (L)"
-            name="tank_capacity"
-            type="number"
-            value={formData.tank_capacity || ""}
-            onChange={handleChange}
-            variant="filled"
-            inputProps={{ min: 0 }}
-            sx={{ flex: 1 }}
-          />
-          <TextField
             select
             label="タンク種類"
             name="tank_material"
@@ -274,6 +264,16 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
             <MenuItem value={"steel"}>スチール</MenuItem>
             <MenuItem value={"aluminum"}>アルミ</MenuItem>
           </TextField>
+          <TextField
+            label="タンク容量 (L)"
+            name="tank_capacity"
+            type="number"
+            value={formData.tank_capacity || ""}
+            onChange={handleChange}
+            variant="filled"
+            inputProps={{ min: 0 }}
+            sx={{ flex: 1 }}
+          />
         </Box>
 
         <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
