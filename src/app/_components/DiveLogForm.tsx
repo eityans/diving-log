@@ -31,6 +31,7 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
       user_id: currentUser?.id || "",
       weight: currentUser?.last_dive?.weight || undefined,
       guide_name: currentUser?.last_dive?.guide_name || "",
+      shop_name: currentUser?.last_dive?.shop_name || "",
       equipment: currentUser?.last_dive?.equipment || "",
       tank_capacity: currentUser?.last_dive?.tank_capacity || undefined,
       tank_material: currentUser?.last_dive?.tank_material || undefined,
