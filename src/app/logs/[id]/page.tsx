@@ -50,7 +50,7 @@ export default function DiveLogDetail() {
       <Paper elevation={3} sx={{ p: 4 }}>
         <Box sx={{ display: "flex", justifyContent: "space-between", mb: 4 }}>
           <Typography variant="h4" component="h1" fontWeight="bold">
-            {log.spot_name}
+            {log.spot_name} {log.point_name && log.point_name}
           </Typography>
           <Typography variant="body1" color="text.secondary">
             {log.date} #{log.dive_number}
@@ -118,7 +118,6 @@ export default function DiveLogDetail() {
                 <span className="text-gray-500">透明度: </span>
                 {log.visibility ? `${log.visibility}m` : "-"}
               </div>
-              
             </Box>
           </Paper>
         </Box>

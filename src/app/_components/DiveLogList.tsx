@@ -39,7 +39,7 @@ export function DiveLogList({ logs }: DiveLogListProps) {
                 sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}
               >
                 <Typography variant="h6" component="h3" fontWeight="bold">
-                  {log.spot_name}
+                  {log.spot_name} {log.point_name && log.point_name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   {log.date} #{log.dive_number}
