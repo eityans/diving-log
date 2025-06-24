@@ -249,26 +249,7 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
             inputProps={{ step: "0.1", min: 0 }}
             sx={{ flex: 1 }}
           />
-          <TextField
-            label="透明度 (m)"
-            name="visibility"
-            type="number"
-            value={formData.visibility || ""}
-            onChange={handleChange}
-            variant="filled"
-            inputProps={{ step: "0.1", min: 0 }}
-            sx={{ flex: 1 }}
-          />
-          <TextField
-            label="残圧 (bar)"
-            name="air_remaining"
-            type="number"
-            value={formData.air_remaining || ""}
-            onChange={handleChange}
-            variant="filled"
-            inputProps={{ step: "1", min: 0 }}
-            sx={{ flex: 1 }}
-          />
+
           <TextField
             label="タンク容量 (L)"
             name="tank_capacity"
@@ -291,6 +272,29 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
             <MenuItem value={"steel"}>スチール</MenuItem>
             <MenuItem value={"aluminum"}>アルミ</MenuItem>
           </TextField>
+        </Box>
+
+        <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+          <TextField
+            label="透明度 (m)"
+            name="visibility"
+            type="number"
+            value={formData.visibility || ""}
+            onChange={handleChange}
+            variant="filled"
+            inputProps={{ step: "0.1", min: 0 }}
+            sx={{ flex: 1 }}
+          />
+          <TextField
+            label="残圧 (bar)"
+            name="air_remaining"
+            type="number"
+            value={formData.air_remaining || ""}
+            onChange={handleChange}
+            variant="filled"
+            inputProps={{ step: "1", min: 0 }}
+            sx={{ flex: 1 }}
+          />
         </Box>
 
         <TextField
