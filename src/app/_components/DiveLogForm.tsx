@@ -319,7 +319,7 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
           fullWidth
           variant="filled"
           multiline
-          rows={4}
+          rows={6}
           sx={{ mb: 2 }}
         />
 
