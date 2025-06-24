@@ -3,6 +3,7 @@ export interface DiveLog {
   user_id: string;
   date: string;
   spot_name: string;
+  point_name?: string;
   dive_number: number;
   average_depth?: number;
   max_depth?: number;

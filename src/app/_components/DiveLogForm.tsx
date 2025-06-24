@@ -152,11 +152,21 @@ export function DiveLogForm({ initialData, isEdit = false }: DiveLogFormProps) {
         </Box>
 
         <TextField
-          label="場所"
+          label="場所 (エリア名)"
           name="spot_name"
           value={formData.spot_name}
           onChange={handleChange}
           required
+          fullWidth
+          variant="filled"
+          sx={{ mb: 2 }}
+        />
+
+        <TextField
+          label="ポイント名"
+          name="point_name"
+          value={formData.point_name || ""}
+          onChange={handleChange}
           fullWidth
           variant="filled"
           sx={{ mb: 2 }}
