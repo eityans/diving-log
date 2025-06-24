@@ -2,14 +2,7 @@
 
 import { DiveLog } from "@/types/diveLog";
 import Link from "next/link";
-import {
-  Card,
-  CardContent,
-  Typography,
-  Box,
-  Paper,
-  ButtonBase,
-} from "@mui/material";
+import { Card, CardContent, Typography, Box, ButtonBase } from "@mui/material";
 
 interface DiveLogListProps {
   logs: DiveLog[];
@@ -46,55 +39,35 @@ export function DiveLogList({ logs }: DiveLogListProps) {
                 </Typography>
               </Box>
 
-              <Box
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(2, 1fr)",
-                  gap: 2,
-                  width: "100%",
-                }}
-              >
-                <Paper elevation={0} sx={{ p: 2, bgcolor: "grey.100" }}>
-                  <Typography variant="subtitle2" color="text.secondary">
-                    深度
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 1 }}>
+                {log.average_depth && (
+                  <Typography variant="body2" color="text.secondary">
+                    深度: {log.average_depth}m
+                    {log.max_depth && `/${log.max_depth}m`}
                   </Typography>
-                  <Typography>
-                    {log.average_depth && `${log.average_depth}m`}
-                    {log.max_depth && ` / ${log.max_depth}m`}
+                )}
+                {log.entry_time && (
+                  <Typography variant="body2" color="text.secondary">
+                    時刻: {log.entry_time}
+                    {log.exit_time && `-${log.exit_time}`}
                   </Typography>
-                </Paper>
-                <Paper elevation={0} sx={{ p: 2, bgcolor: "grey.100" }}>
-                  <Typography variant="subtitle2" color="text.secondary">
-                    時刻
+                )}
+                {(log.min_temp || log.max_temp) && (
+                  <Typography variant="body2" color="text.secondary">
+                    水温: {log.min_temp && `${log.min_temp}°C`}
+                    {log.max_temp && `/${log.max_temp}°C`}
                   </Typography>
-                  <Typography>
-                    {log.entry_time && `${log.entry_time}`}
-                    {log.exit_time && ` - ${log.exit_time}`}
+                )}
+                {log.guide_name && (
+                  <Typography variant="body2" color="text.secondary">
+                    ガイド: {log.guide_name}
                   </Typography>
-                </Paper>
-                <Paper elevation={0} sx={{ p: 2, bgcolor: "grey.100" }}>
-                  <Typography variant="subtitle2" color="text.secondary">
-                    水温
+                )}
+                {log.air_remaining && (
+                  <Typography variant="body2" color="text.secondary">
+                    残圧: {log.air_remaining}bar
                   </Typography>
-                  <Typography>
-                    {log.min_temp && `${log.min_temp}°C`}
-                    {log.max_temp && ` / ${log.max_temp}°C`}
-                  </Typography>
-                </Paper>
-                <Paper elevation={0} sx={{ p: 2, bgcolor: "grey.100" }}>
-                  <Typography variant="subtitle2" color="text.secondary">
-                    ガイド
-                  </Typography>
-                  <Typography>{log.guide_name}</Typography>
-                </Paper>
-                <Paper elevation={0} sx={{ p: 2, bgcolor: "grey.100" }}>
-                  <Typography variant="subtitle2" color="text.secondary">
-                    残圧
-                  </Typography>
-                  <Typography>
-                    {log.air_remaining && `${log.air_remaining}bar`}
-                  </Typography>
-                </Paper>
+                )}
               </Box>
             </CardContent>
           </Card>
