@@ -1,51 +1,70 @@
 "use client";
 
-import { User } from "@/types/user";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { LogoutButton } from "./LogoutButton";
 
-interface ServerLoadingProps {
-  loading: boolean;
-  timeout?: number;
-  debugInfo?: {
-    currentState: string;
-    currentUser?: User;
-    isLoading?: boolean;
-    loadingLogs?: boolean;
-    error?: string | null;
-  };
-}
+type ConnectionStatus = "checking" | "connected" | "timeout";
 
 export function ServerLoading({
-  loading,
   timeout = 3000,
-  debugInfo,
-}: ServerLoadingProps) {
-  const [showServerStartMessage, setShowServerStartMessage] = useState(false);
+  children,
+}: {
+  timeout?: number;
+  children: React.ReactNode;
+}) {
+  const [connectionStatus, setConnectionStatus] =
+    useState<ConnectionStatus>("checking");
   const [showLogoutSuggestion, setShowLogoutSuggestion] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+
+  const checkConnection = async () => {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/test`,
+        {
+          signal: controller.signal,
+        }
+      );
+
+      clearTimeout(timeoutId);
+
+      if (response.ok) {
+        setConnectionStatus("connected");
+      }
+    } catch {
+      setConnectionStatus("timeout");
+    }
+  };
 
   useEffect(() => {
-    if (loading) {
-      const timer1 = setTimeout(() => {
-        setShowServerStartMessage(true);
-      }, timeout);
+    // 初回チェック
+    checkConnection();
 
-      const timer2 = setTimeout(() => {
+    // 接続失敗時のみ定期的にチェック
+    const intervalId = setInterval(() => {
+      if (connectionStatus === "timeout") {
+        checkConnection();
+        setRetryCount((prev) => prev + 1);
+      }
+    }, 3000);
+
+    return () => clearInterval(intervalId);
+  }, [connectionStatus]);
+
+  useEffect(() => {
+    if (connectionStatus === "timeout" && retryCount >= 2) {
+      const timer = setTimeout(() => {
         setShowLogoutSuggestion(true);
-      }, timeout * 2); // ログアウト提案は2倍の時間後に表示
-
-      return () => {
-        clearTimeout(timer1);
-        clearTimeout(timer2);
-      };
-    } else {
-      setShowServerStartMessage(false);
-      setShowLogoutSuggestion(false);
+      }, timeout * 2);
+      return () => clearTimeout(timer);
     }
-  }, [loading, timeout]);
+  }, [connectionStatus, retryCount, timeout]);
 
-  if (!loading) return null;
+  if (connectionStatus === "connected") return children;
 
   return (
     <Box
@@ -60,52 +79,20 @@ export function ServerLoading({
         gap: 2,
       }}
     >
-      <Typography variant="h6">Loading...</Typography>
+      <Typography variant="h6">
+        {connectionStatus === "checking"
+          ? "サーバー接続を確認中..."
+          : "サーバー起動中..."}
+      </Typography>
 
-      {showServerStartMessage && (
+      {connectionStatus === "timeout" && (
         <>
           <Typography variant="body2" color="text.secondary">
             サーバーを起動中です。初回アクセスは少し時間がかかります...
           </Typography>
-          {debugInfo && (
-            <Box
-              sx={{
-                mt: 2,
-                p: 2,
-                backgroundColor: "rgba(0,0,0,0.1)",
-                borderRadius: 1,
-                width: "100%",
-                textAlign: "left",
-              }}
-            >
-              <Typography variant="caption" component="div">
-                <strong>Debug Info:</strong>
-              </Typography>
-              <Typography variant="caption" component="div">
-                State: {debugInfo.currentState}
-              </Typography>
-              {debugInfo.currentUser !== undefined && (
-                <Typography variant="caption" component="div">
-                  User: {debugInfo.currentUser.toString()}
-                </Typography>
-              )}
-              {debugInfo.isLoading !== undefined && (
-                <Typography variant="caption" component="div">
-                  isLoading: {debugInfo.isLoading.toString()}
-                </Typography>
-              )}
-              {debugInfo.loadingLogs !== undefined && (
-                <Typography variant="caption" component="div">
-                  loadingLogs: {debugInfo.loadingLogs.toString()}
-                </Typography>
-              )}
-              {debugInfo.error && (
-                <Typography variant="caption" component="div">
-                  error: {debugInfo.error}
-                </Typography>
-              )}
-            </Box>
-          )}
+          <Button variant="outlined" onClick={checkConnection} sx={{ mt: 2 }}>
+            再試行
+          </Button>
         </>
       )}
 

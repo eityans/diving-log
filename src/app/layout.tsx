@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Provider } from "jotai";
+import { ServerLoading } from "./_components/ServerLoading";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +33,7 @@ export default function RootLayout({
           <meta name="theme-color" content="#b8e986" />
         </head>
         <body className={`${geistSans.variable} ${geistMono.variable}`}>
-          {children}
+          <ServerLoading>{children}</ServerLoading>
         </body>
       </html>
     </Provider>
